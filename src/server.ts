@@ -27,6 +27,7 @@ const PRICES = {
   BEST_YIELD: parseInt(process.env.PRICE_BEST_YIELD || '50000', 10), // $0.05
   PORTFOLIO: parseInt(process.env.PRICE_PORTFOLIO || '100000', 10), // $0.10
   RISK: parseInt(process.env.PRICE_RISK || '75000', 10), // $0.075
+  DEFI_INTEL: parseInt(process.env.PRICE_DEFI_INTEL || '100000', 10), // $0.10
 };
 
 // Initialize Solana connection
@@ -238,6 +239,7 @@ app.get('/health', (_req: Request, res: Response) => {
       '/best-yield': `${PRICES.BEST_YIELD} micro-USDC`,
       '/portfolio-analytics/:wallet': `${PRICES.PORTFOLIO} micro-USDC`,
       '/risk-score/:wallet': `${PRICES.RISK} micro-USDC`,
+      '/api/defi-intel': `${PRICES.DEFI_INTEL} micro-USDC`,
     },
   });
 });
@@ -348,7 +350,7 @@ app.get(
  */
 app.get(
   '/api/defi-intel',
-  requirePayment(PRICES.PORTFOLIO), // Use max price for unified endpoint
+  requirePayment(PRICES.DEFI_INTEL),
   async (req: Request, res: Response): Promise<void> => {
     try {
       const { type, wallet } = req.query;
@@ -427,7 +429,7 @@ app.get(
       res.json({
         success: true,
         ...result,
-        paid: PRICES.PORTFOLIO,
+        paid: PRICES.DEFI_INTEL,
       });
     } catch (error) {
       console.error('Error in /api/defi-intel:', error);
@@ -464,8 +466,8 @@ app.get('/pricing', (_req: Request, res: Response) => {
         description: 'Calculate risk score and health metrics for a wallet',
       },
       'GET /api/defi-intel': {
-        price: PRICES.PORTFOLIO,
-        usd: `$${(PRICES.PORTFOLIO / 1e6).toFixed(4)}`,
+        price: PRICES.DEFI_INTEL,
+        usd: `$${(PRICES.DEFI_INTEL / 1e6).toFixed(4)}`,
         description: 'Unified DeFi intelligence job - supports type=yield|portfolio|risk|all',
         queryParams: {
           type: 'yield | portfolio | risk | all',
@@ -527,7 +529,7 @@ app.listen(PORT, () => {
   console.log(`   • GET /best-yield          ($${(PRICES.BEST_YIELD / 1e6).toFixed(4)})`);
   console.log(`   • GET /portfolio-analytics ($${(PRICES.PORTFOLIO / 1e6).toFixed(4)})`);
   console.log(`   • GET /risk-score          ($${(PRICES.RISK / 1e6).toFixed(4)})`);
-  console.log(`   • GET /api/defi-intel      ($${(PRICES.PORTFOLIO / 1e6).toFixed(4)})  [x402.jobs]\n`);
+  console.log(`   • GET /api/defi-intel      ($${(PRICES.DEFI_INTEL / 1e6).toFixed(4)})  [x402.jobs]\n`);
 
   if (!RECIPIENT_WALLET || RECIPIENT_WALLET === 'your_solana_devnet_address_here') {
     console.warn('⚠️  WARNING: RECIPIENT_WALLET not configured in .env');
