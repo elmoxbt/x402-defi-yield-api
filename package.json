@@ -1,0 +1,50 @@
+{
+  "name": "x402-defi-yield-api",
+  "version": "1.0.0",
+  "description": "Production-ready DeFi yield & portfolio analytics API with x402 micropayments on Solana",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "client": "tsx src/client.ts",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "solana",
+    "defi",
+    "x402",
+    "micropayments",
+    "yield",
+    "portfolio",
+    "api",
+    "ai-agents"
+  ],
+  "author": "Elmo",
+  "license": "MIT",
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
+    "@drift-labs/sdk": "^2.88.0",
+    "@mrgnlabs/marginfi-client-v2": "^6.3.2",
+    "@pythnetwork/hermes-client": "^2.1.0",
+    "@solana/spl-token": "^0.4.9",
+    "@solana/web3.js": "^1.98.4",
+    "axios": "^1.7.9",
+    "bs58": "^6.0.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "x402-solana": "^0.1.5"
+  },
+  "devDependencies": {
+    "@types/bs58": "^4.0.4",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.5",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
