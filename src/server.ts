@@ -514,27 +514,29 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 /**
- * Start server
+ * Start server (only in non-serverless environments)
  */
-app.listen(PORT, () => {
-  console.log('\n  x402 DeFi Yield & Portfolio API');
-  console.log('   Production-ready micropayment API for AI agents\n');
-  console.log(`   Server:    http://localhost:${PORT}`);
-  console.log('   Network:   Solana Devnet');
-  console.log('   Protocol:  x402-solana');
-  console.log(`   Recipient: ${RECIPIENT_WALLET.slice(0, 20)}...\n`);
-  console.log('   Endpoints:');
-  console.log('   • GET /health              (free)');
-  console.log('   • GET /pricing             (free)');
-  console.log(`   • GET /best-yield          ($${(PRICES.BEST_YIELD / 1e6).toFixed(4)})`);
-  console.log(`   • GET /portfolio-analytics ($${(PRICES.PORTFOLIO / 1e6).toFixed(4)})`);
-  console.log(`   • GET /risk-score          ($${(PRICES.RISK / 1e6).toFixed(4)})`);
-  console.log(`   • GET /api/defi-intel      ($${(PRICES.DEFI_INTEL / 1e6).toFixed(4)})  [x402.jobs]\n`);
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log('\n  x402 DeFi Yield & Portfolio API');
+    console.log('   Production-ready micropayment API for AI agents\n');
+    console.log(`   Server:    http://localhost:${PORT}`);
+    console.log('   Network:   Solana Devnet');
+    console.log('   Protocol:  x402-solana');
+    console.log(`   Recipient: ${RECIPIENT_WALLET.slice(0, 20)}...\n`);
+    console.log('   Endpoints:');
+    console.log('   • GET /health              (free)');
+    console.log('   • GET /pricing             (free)');
+    console.log(`   • GET /best-yield          ($${(PRICES.BEST_YIELD / 1e6).toFixed(4)})`);
+    console.log(`   • GET /portfolio-analytics ($${(PRICES.PORTFOLIO / 1e6).toFixed(4)})`);
+    console.log(`   • GET /risk-score          ($${(PRICES.RISK / 1e6).toFixed(4)})`);
+    console.log(`   • GET /api/defi-intel      ($${(PRICES.DEFI_INTEL / 1e6).toFixed(4)})  [x402.jobs]\n`);
 
-  if (!RECIPIENT_WALLET || RECIPIENT_WALLET === 'your_solana_devnet_address_here') {
-    console.warn('⚠️  WARNING: RECIPIENT_WALLET not configured in .env');
-    console.warn('   Please set your Solana devnet address to receive payments\n');
-  }
-});
+    if (!RECIPIENT_WALLET || RECIPIENT_WALLET === 'your_solana_devnet_address_here') {
+      console.warn('⚠️  WARNING: RECIPIENT_WALLET not configured in .env');
+      console.warn('   Please set your Solana devnet address to receive payments\n');
+    }
+  });
+}
 
 export default app;
